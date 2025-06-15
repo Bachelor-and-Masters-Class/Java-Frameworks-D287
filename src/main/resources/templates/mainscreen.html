@@ -1,28 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>RepairPro Hardware</title>
+    <style>
+        .product-entry {
+            margin-bottom: 1em;
+        }
+        .product-buttons form {
+            display: inline;
+        }
+        .alert {
+            margin: 1em 0;
+            padding: 0.75em;
+            border: 1px solid #ccc;
+            background-color: #f0f8ff;
+        }
+    </style>
 </head>
 <body>
 <header>
     <h1>RepairPro Hardware</h1>
     <nav>
-        <a href="mainscreen.html">Home</a> |
-        <a href="about.html">About Us</a>
+        <a href="/mainscreen.html">Home</a>
+        <a href="/templates/about.html">About Us</a>
     </nav>
 </header>
 
 <main>
+    <div th:if="${message}" class="alert" th:text="${message}"></div>
+
     <section id="products">
         <h2>Our Products</h2>
-        <ul>
-            <li>Cordless Drill Kit</li>
-            <li>Electrician Tool Set</li>
-            <li>Plumbing Repair Kit</li>
-            <li>General Repair Set</li>
-            <li>Deluxe Home Repair Kit</li>
-        </ul>
+
+        <div class="product-entry" th:each="product : ${productList}">
+            <span th:text="${product.name}">Product Name</span>
+
+            <form th:action="@{'/products/buy/' + ${product.id}}" method="post">
+                <button type="submit">Buy Now</button>
+            </form>
+
+            <form th:action="@{'/products/update/' + ${product.id}}" method="get">
+                <button type="submit">Update</button>
+            </form>
+
+            <form th:action="@{'/products/delete/' + ${product.id}}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
     </section>
 
     <section id="parts">
