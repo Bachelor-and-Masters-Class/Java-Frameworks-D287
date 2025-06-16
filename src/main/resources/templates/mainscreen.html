@@ -2,90 +2,73 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-    <title>My Bicycle Shop</title>
+    <title>RepairPro Hardware</title>
+    <style>
+        .product-entry {
+            margin-bottom: 1em;
+        }
+        .product-buttons form {
+            display: inline;
+        }
+        .alert {
+            margin: 1em 0;
+            padding: 0.75em;
+            border: 1px solid #ccc;
+            background-color: #f0f8ff;
+        }
+    </style>
 </head>
 <body>
+<header>
+    <h1>RepairPro Hardware</h1>
+    <nav>
+        <a href="/mainscreen.html">Home</a>
+        <a href="/templates/about.html">About Us</a>
+    </nav>
+</header>
 
-<div class="container">
-    <h1>Shop</h1>
-    <hr>
-    <h2>Parts</h2>
-    <form th:action="@{/mainscreen}">
-        Filter: <input type="text" name="partkeyword" id="partkeyword" size="50" th:value="${partkeyword}" required />
-        &nbsp;
-        <input type="submit" value="Search" />
-        &nbsp;
-        <input type="button" value="Clear" id="btnClearPart" onclick="clearSearch()" />
-    </form>
-    <br><br>
-    <a th:href="@{/showFormAddInPart}" class="btn btn-primary btn-sm mb-3">Add Inhouse Part</a>
-    <a th:href="@{/showFormAddOutPart}" class="btn btn-primary btn-sm mb-3">Add Outsourced Part</a>
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Inventory</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="tempPart : ${parts}">
-            <td th:text="${tempPart.name}">1</td>
-            <td th:text="${tempPart.price}">1</td>
-            <td th:text="${tempPart.inv}">1</td>
-            <td><a th:href="@{/showPartFormForUpdate(partID=${tempPart.id})}" class="btn btn-primary btn-sm mb-3">Update</a>
-                <a th:href="@{/deletepart(partID=${tempPart.id})}" class="btn btn-primary btn-sm mb-3"
-                   onclick="if(!(confirm('Are you sure you want to delete this part?')))return false">Delete</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <h2>Products</h2>
-    <form th:action="@{/mainscreen}">
-        Filter: <input type="text" name="productkeyword" id="productkeyword" size="50" th:value="${productkeyword}" required />
-        &nbsp;
-        <input type="submit" value="Search" />
-        &nbsp;
-        <input type="button" value="Clear" id="btnClearProduct" onclick="clearSearch()" />
-    </form>
-    <script type="text/javascript">
-        function clearSearch() {
-            window.location = "[[@{/}]]";
-        }
-    </script>
-    <br><br>
-    <a th:href="@{/showFormAddProduct}" class="btn btn-primary btn-sm mb-3">Add Product</a>
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Inventory</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="tempProduct : ${products}">
-            <td th:text="${tempProduct.name}">1</td>
-            <td th:text="${tempProduct.price}">1</td>
-            <td th:text="${tempProduct.inv}">1</td>
-            <td><a th:href="@{/showProductFormForUpdate(productID=${tempProduct.id})}" class="btn btn-primary btn-sm mb-3">Update</a>
-                <a th:href="@{/deleteproduct(productID=${tempProduct.id})}" class="btn btn-primary btn-sm mb-3"
-                   onclick="if(!(confirm('Are you sure you want to delete this product?')))return false">Delete</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<main>
+    <div th:if="${message}" class="alert" th:text="${message}"></div>
+
+    <section id="products">
+        <h2>Our Products</h2>
+        <ul>
+            <li>Cordless Drill</li>
+            <li>Electrician Tool Kit</li>
+            <li>Plumbing Repair Kit</li>
+            <li>General Repair Set</li>
+            <li>Deluxe Home Repair Kit</li>
+        </ul>
+    </section>
+
+        <div class="product-entry" th:each="product : ${productList}">
+            <span th:text="${product.name}">Product Name</span>
+
+            <form th:action="@{'/products/buy/' + ${product.id}}" method="post">
+                <button type="submit">Buy Now</button>
+            </form>
+
+            <form th:action="@{'/products/update/' + ${product.id}}" method="get">
+                <button type="submit">Update</button>
+            </form>
+
+            <form th:action="@{'/products/delete/' + ${product.id}}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="parts">
+        <h2>Available Parts</h2>
+        <ul>
+            <li>Cordless Drill</li>
+            <li>Wire Stripper</li>
+            <li>Pipe Wrench</li>
+            <li>Utility Knife</li>
+            <li>Adjustable Spanner</li>
+        </ul>
+    </section>
+</main>
 </body>
 </html>
+
