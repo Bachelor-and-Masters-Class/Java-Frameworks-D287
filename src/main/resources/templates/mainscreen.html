@@ -32,6 +32,14 @@
 
     <section id="products">
         <h2>Our Products</h2>
+        <ul>
+            <li>Cordless Drill</li>
+            <li>Electrician Tool Kit</li>
+            <li>Plumbing Repair Kit</li>
+            <li>General Repair Set</li>
+            <li>Deluxe Home Repair Kit</li>
+        </ul>
+    </section>
 
         <div class="product-entry" th:each="product : ${productList}">
             <span th:text="${product.name}">Product Name</span>
@@ -63,3 +71,4 @@
 </main>
 </body>
 </html>
+
