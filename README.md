@@ -197,6 +197,7 @@ G. Modify the parts to track maximum and minimum inventory by doing the followin
 File Name: Part.java
 
 Lines 26-30: Added additional fields to the part entity (max/min inventory)
+
 ```private int inv;```
 ```private int minInv;```
 ```private int maxInv;```
