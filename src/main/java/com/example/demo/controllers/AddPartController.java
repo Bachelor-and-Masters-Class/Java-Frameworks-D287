@@ -57,12 +57,37 @@ public class AddPartController {
         PartService repo = context.getBean(PartServiceImpl.class);
         Part part=repo.findById(theId);
         if(part.getProducts().isEmpty()){
-            repo.deleteById(theId);
+            repo.deleteById((long) theId);
             return "confirmationdeletepart";
         }
         else{
             return "negativeerror";
         }
     }
+    @PostMapping("/savepart")
+    public String savePart(@Valid @ModelAttribute("part") Part part,
+                           BindingResult bindingResult,
+                           Model model) {
 
+
+        if (!part.isInventoryValid()) {
+            bindingResult.rejectValue("inv", "error.inv", "Inventory cannot be less than the minimum.");
+        }else if (part.getInv() > part.getMaxInv()) {
+            bindingResult.rejectValue("inv", "error.inv", "Inventory cannot be greater than the maximum.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            if (part instanceof InhousePart) {
+                model.addAttribute("inhousepart", part);
+                return "InhousePartForm";
+            } else {
+                model.addAttribute("outsourcedpart", part);
+                return "OutsourcedPartForm";
+            }
+        }
+        PartService partService = context.getBean(PartServiceImpl.class);
+        partService.save(part);
+
+        return "confirmationaddpart";
+    }
 }
