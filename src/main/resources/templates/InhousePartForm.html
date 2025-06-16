@@ -10,27 +10,22 @@
 
 <form th:action="@{/showFormAddInPart}" th:object="${inhousepart}" method="POST">
 
-    <!-- Hidden field for ID -->
     <p><input type="hidden" th:field="*{id}" /></p>
 
-    <!-- Part Name -->
     <p><label>
         <input type="text" th:field="*{name}" placeholder="Name" class="form-control mb-4 col-4" />
     </label></p>
 
-    <!-- Price -->
     <p><label>
         <input type="text" th:field="*{price}" placeholder="Price" class="form-control mb-4 col-4" />
     </label></p>
     <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</p>
 
-    <!-- Inventory -->
     <p><label>
         <input type="text" th:field="*{inv}" placeholder="Inventory" class="form-control mb-4 col-4" />
     </label></p>
     <p th:if="${#fields.hasErrors('inv')}" th:errors="*{inv}">Inventory Error</p>
 
-    <!-- Min Inventory -->
     <p><label>
         <input type="text" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4" />
     </label></p>
