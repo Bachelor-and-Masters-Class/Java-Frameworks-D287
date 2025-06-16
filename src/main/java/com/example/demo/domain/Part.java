@@ -98,4 +98,10 @@ public abstract class Part {
     public boolean isInventoryValid() {
         return inv >= minInv && inv <= maxInv;
     }
+
+    public void setMax(int i) {
+    }
+
+    public void setMin(int i) {
+    }
 }
