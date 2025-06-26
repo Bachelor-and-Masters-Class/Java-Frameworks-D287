@@ -18,22 +18,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class InhousePartTest {
     InhousePart ip;
+
     @BeforeEach
     void setUp() {
-        ip= new InhousePart();
+        ip = new InhousePart();
     }
 
     @Test
-    void getPartId() {
-        int idValue=4;
-        ip.setPartId(idValue);
-        assertEquals(ip.getPartId(), idValue);
+    void getIdTest() {
+        Long idValue = 4L;
+        ip.setId(idValue);
+        assertEquals(idValue, ip.getId());
     }
 
     @Test
-    void setPartId() {
-        int idValue=4;
-        ip.setPartId(idValue);
-        assertEquals(ip.getPartId(), idValue);
+    void setIdTest() {
+        Long idValue = 4L;
+        ip.setId(idValue);
+        assertEquals(idValue, ip.getId());
     }
 }
