@@ -22,8 +22,8 @@
 <header>
     <h1>RepairPro Hardware</h1>
     <nav>
-        <a href="/mainscreen.html">Home</a>
-        <a href="/templates/about.html">About Us</a>
+        <a href="/mainscreen">Home</a>
+        <a href="/about">About Us</a>
     </nav>
 </header>
 
@@ -32,43 +32,46 @@
 
     <section id="products">
         <h2>Our Products</h2>
-        <ul>
-            <li>Cordless Drill</li>
-            <li>Electrician Tool Kit</li>
-            <li>Plumbing Repair Kit</li>
-            <li>General Repair Set</li>
-            <li>Deluxe Home Repair Kit</li>
-        </ul>
-    </section>
 
         <div class="product-entry" th:each="product : ${productList}">
-            <span th:text="${product.name}">Product Name</span>
+            <p><strong>ID:</strong> <span th:text="${product.id}">0</span></p>
+            <p><strong>Name:</strong> <span th:text="${product.name}">Product Name</span></p>
+            <p><strong>Price:</strong> $<span th:text="${product.price}">0.00</span></p>
+            <p><strong>Inventory:</strong> <span th:text="${product.inv}">0</span></p>
 
-            <form th:action="@{'/products/buy/' + ${product.id}}" method="post">
-                <button type="submit">Buy Now</button>
-            </form>
+            <div th:if="${product.parts != null}">
+                <p><strong>Associated Parts:</strong></p>
+                <ul>
+                    <li th:each="part : ${product.parts}" th:text="${part.name}"></li>
+                </ul>
+            </div>
 
-            <form th:action="@{'/products/update/' + ${product.id}}" method="get">
-                <button type="submit">Update</button>
-            </form>
+            <div class="product-buttons">
+                <form th:action="@{'/buy/' + ${product.id}}" method="post">
+                    <button type="submit">Buy Now</button>
+                </form>
 
-            <form th:action="@{'/products/delete/' + ${product.id}}" method="post">
-                <button type="submit">Delete</button>
-            </form>
+                <form th:action="@{/showProductFormForUpdate}" method="get">
+                    <input type="hidden" name="productID" th:value="${product.id}" />
+                    <button type="submit">Update</button>
+                </form>
+
+                <form th:action="@{'/products/delete/' + ${product.id}}" method="post">
+                    <button type="submit">Delete</button>
+                </form>
+            </div>
         </div>
     </section>
 
     <section id="parts">
         <h2>Available Parts</h2>
         <ul>
-            <li>Cordless Drill</li>
-            <li>Wire Stripper</li>
-            <li>Pipe Wrench</li>
-            <li>Utility Knife</li>
-            <li>Adjustable Spanner</li>
+            <li th:each="part : ${partList}" th:text="${part.name}"></li>
         </ul>
+        <form th:action="@{/showFormAddPart}" method="get">
+            <button type="submit">Add New Part</button>
+        </form>
     </section>
 </main>
 </body>
 </html>
-
