@@ -121,4 +121,15 @@ public class AddPartController {
         model.addAttribute("inhousepart", newPart);
         return "InhousePartForm";
     }
+
+    @PostMapping("/savePart")
+    public String savePart(@Valid @ModelAttribute("part") InhousePart part, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "partForm";
+        }
+
+        PartService partService = context.getBean(PartServiceImpl.class);
+        partService.save(part);
+        return "confirmationaddpart";
+    }
 }
