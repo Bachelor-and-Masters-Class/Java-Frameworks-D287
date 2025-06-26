@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Part Form</title>
+</head>
+<body>
+<h1>Part Detail</h1>
+
+<div th:if="${error}" style="color:red; font-weight:bold;">
+    <p th:text="${error}"></p>
+</div>
+
+<div th:if="${#fields.hasErrors()}">
+    <ul>
+        <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+    </ul>
+</div>
+
+<form th:action="@{/savePart}" th:object="${part}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+
+    <p><input type="text" th:field="*{name}" placeholder="Name"/></p>
+    <p><input type="text" th:field="*{price}" placeholder="Price"/></p>
+    <p><input type="text" th:field="*{inv}" placeholder="Inventory"/></p>
+    <p><input type="text" th:field="*{minInv}" placeholder="Minimum Inventory"/></p>
+    <p><input type="text" th:field="*{maxInv}" placeholder="Maximum Inventory"/></p>
+
+    <p><input type="submit" value="Submit"/></p>
+</form>
+</body>
+</html>
