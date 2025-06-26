@@ -10,45 +10,40 @@
 
 <form th:action="@{/showFormAddOutPart}" th:object="${outsourcedpart}" method="POST">
 
-    <!-- Hidden field for ID -->
     <p><input type="hidden" th:field="*{id}" /></p>
 
-    <!-- Part Name -->
     <p><label>
         <input type="text" th:field="*{name}" placeholder="Name" class="form-control mb-4 col-4" />
     </label></p>
 
-    <!-- Price -->
     <p><label>
-        <input type="text" th:field="*{price}" placeholder="Price" class="form-control mb-4 col-4" />
+        <input type="number" step="0.01" th:field="*{price}" placeholder="Price" class="form-control mb-4 col-4" />
     </label></p>
     <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</p>
 
     <p><label>
-        <input type="text" th:field="*{inv}" placeholder="Inventory" class="form-control mb-4 col-4" />
+        <input type="number" th:field="*{inv}" placeholder="Inventory" class="form-control mb-4 col-4" />
     </label></p>
     <p th:if="${#fields.hasErrors('inv')}" th:errors="*{inv}">Inventory Error</p>
 
     <p><label>
-        <input type="text" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4" />
+        <input type="number" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4" />
     </label></p>
     <p th:if="${#fields.hasErrors('minInv')}" th:errors="*{minInv}">Min Inventory Error</p>
 
     <p><label>
-        <input type="text" th:field="*{maxInv}" placeholder="Maximum Inventory" class="form-control mb-4 col-4" />
+        <input type="number" th:field="*{maxInv}" placeholder="Maximum Inventory" class="form-control mb-4 col-4" />
     </label></p>
     <p th:if="${#fields.hasErrors('maxInv')}" th:errors="*{maxInv}">Max Inventory Error</p>
 
     <p><label>
-        <input type="text" placeholder="Company Name" class="form-control mb-4 col-4" />
+        <input type="text" placeholder="Part ID" class="form-control mb-4 col-4" />
     </label></p>
 
     <p><input type="submit" value="Submit" /></p>
-
 </form>
 
-<a href="http://localhost:8080/">Link to Main Screen</a>
+<a href="/mainscreen">Link to Main Screen</a>
 
 </body>
 </html>
-
