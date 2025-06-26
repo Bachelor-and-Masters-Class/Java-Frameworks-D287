@@ -3,6 +3,7 @@ package com.example.demo.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -112,9 +113,9 @@ class PartTest {
         myProducts.add(product1);
         myProducts.add(product2);
         partIn.setProducts((List<Product>) myProducts);
-        assertEquals(myProducts,partIn.getProducts());
+        assertEquals(myProducts, partIn.getProducts());
         partOut.setProducts((List<Product>) myProducts);
-        assertEquals(myProducts,partOut.getProducts());
+        assertEquals(myProducts, partOut.getProducts());
     }
 
     @Test
@@ -142,13 +143,13 @@ class PartTest {
 
     @Test
     void testEquals() {
-        partIn.setId(1l);
+        partIn.setId(1L);
         Part newPartIn=new InhousePart();
-        newPartIn.setId(1l);
+        newPartIn.setId(1L);
         assertEquals(partIn,newPartIn);
-        partOut.setId(1l);
+        partOut.setId(1L);
         Part newPartOut=new OutsourcedPart();
-        newPartOut.setId(1l);
+        newPartOut.setId(1L);
         assertEquals(partOut,newPartOut);
 
     }
