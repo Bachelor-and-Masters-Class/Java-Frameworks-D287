@@ -4,9 +4,7 @@ import com.example.demo.domain.Part;
 import com.example.demo.domain.Product;
 import com.example.demo.service.PartService;
 import com.example.demo.service.ProductService;
-import com.example.demo.service.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,10 +18,11 @@ import java.util.List;
 public class AddProductController {
 
     @Autowired
-    private ApplicationContext context;
+    private ProductService productService;
 
     private final PartService partService;
-    private static Product productInEdit; // Used across requests for associating/removing parts
+
+    private static Product productInEdit;
 
     public AddProductController(PartService partService) {
         this.partService = partService;
@@ -31,69 +30,58 @@ public class AddProductController {
 
     @GetMapping("/showFormAddProduct")
     public String showFormAddProduct(Model model) {
-        productInEdit = new Product(); // new blank product
+        productInEdit = new Product();
         model.addAttribute("product", productInEdit);
         updatePartLists(model, productInEdit);
         return "productForm";
     }
 
     @PostMapping("/showFormAddProduct")
-    public String submitForm(@Valid @ModelAttribute("product") Product product,
-                             BindingResult bindingResult,
-                             Model model) {
+    public String saveProduct(@Valid @ModelAttribute("product") Product product,
+                              BindingResult bindingResult,
+                              Model model) {
+
+        if (productInEdit == null || productInEdit.getParts() == null) {
+            productInEdit = productService.findById((int) product.getId());
+        }
+
+        product.setParts(productInEdit.getParts());
+
 
         if (bindingResult.hasErrors()) {
             updatePartLists(model, product);
             return "productForm";
         }
-
-        ProductService productService = context.getBean(ProductServiceImpl.class);
-
-        product.setParts(productInEdit.getParts());
-
-        if (product.getId() != 0) {
-            Product originalProduct = productService.findById(product.getId());
-            int diff = product.getInv() - originalProduct.getInv();
-
-            if (diff > 0) {
-                for (Part p : originalProduct.getParts()) {
-                    int resultingInventory = p.getInv() - diff;
-                    if (resultingInventory < p.getMin()) {
-                        model.addAttribute("error", "Adding this product will reduce inventory for part '" + p.getName() + "' below its minimum (" + p.getMin() + ").");
-                        updatePartLists(model, product);
-                        return "productForm";
-                    }
-                }
-                for (Part p : originalProduct.getParts()) {
-                    p.setInv(p.getInv() - diff);
-                    partService.save(p);
-                }
+        for (Part part : product.getParts()) {
+            if ((part.getInv() - product.getInv()) < part.getMinInv()) {
+                model.addAttribute("error", "Adding this product will reduce inventory for part '" +
+                        part.getName() + "' below its minimum of " + part.getMinInv() + ".");
+                updatePartLists(model, product);
+                return "productForm";
             }
-        } else {
-            // New product, nothing to subtract
-            product.setInv(0);
         }
 
+        for (Part part : product.getParts()) {
+            part.setInv(part.getInv() - product.getInv());
+            partService.save(part);
+        }
+
+        // Save the product
         productService.save(product);
-        return "confirmationaddproduct";
+        return "redirect:/mainscreen";
     }
 
     @GetMapping("/showProductFormForUpdate")
     public String showProductFormForUpdate(@RequestParam("productID") int productId, Model model) {
-        ProductService productService = context.getBean(ProductServiceImpl.class);
-        Product existingProduct = productService.findById((long) productId);
-        productInEdit = existingProduct;
-
-        model.addAttribute("product", existingProduct);
-        updatePartLists(model, existingProduct);
+        productInEdit = productService.findById(productId);
+        model.addAttribute("product", productInEdit);
+        updatePartLists(model, productInEdit);
         return "productForm";
     }
 
     @GetMapping("/deleteproduct")
-    public String deleteProduct(@RequestParam("productID") int productId, Model model) {
-        ProductService productService = context.getBean(ProductServiceImpl.class);
-        Product product = productService.findById((long) productId);
-
+    public String deleteProduct(@RequestParam("productID") int productId) {
+        Product product = productService.findById(productId);
         for (Part part : product.getParts()) {
             part.getProducts().remove(product);
             partService.save(part);
@@ -101,14 +89,13 @@ public class AddProductController {
 
         product.getParts().clear();
         productService.save(product);
-        productService.deleteById((long) productId);
+        productService.deleteById(productId);
         return "confirmationdeleteproduct";
     }
 
     @GetMapping("/associatepart")
     public String associatePart(@RequestParam("partID") int partId, Model model) {
         Part part = partService.findById(partId);
-
         if (!productInEdit.getParts().contains(part)) {
             productInEdit.getParts().add(part);
             part.getProducts().add(productInEdit);
@@ -147,4 +134,3 @@ public class AddProductController {
         model.addAttribute("assparts", product.getParts());
     }
 }
-
