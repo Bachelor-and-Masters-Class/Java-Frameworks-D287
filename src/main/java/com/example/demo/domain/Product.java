@@ -5,36 +5,37 @@ import com.example.demo.validators.ValidProductPrice;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- *
- *
- *
- *
- */
 @Entity
-@Table(name="Products")
+@Table(name = "Products")
 @ValidProductPrice
 @ValidEnufParts
 public class Product implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    long id;
-    String name;
-    @Min(value = 0, message = "Price value must be positive")
-    double price;
-    @Min(value = 0, message = "Inventory value must be positive")
-    int inv;
-    @ManyToMany(cascade=CascadeType.ALL)
-            @JoinTable(
-                    name = "product_part",
-                    joinColumns = @JoinColumn(name = "product_id"),
-                    inverseJoinColumns = @JoinColumn(name = "part_id")
-            )
-    Set<Part> parts= new HashSet<>();
+    private long id;
+
+    @NotBlank(message = "Name is required")
+    private String name;
+
+    @Min(value = 0, message = "Price must be at least 0")
+    private double price;
+
+    @Min(value = 0, message = "Inventory must be at least 0")
+    private int inv;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "product_part",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "part_id")
+    )
+    private Set<Part> parts = new HashSet<>();
 
     public Product() {
     }
@@ -95,9 +96,11 @@ public class Product implements Serializable {
         this.parts = parts;
     }
 
-    public String toString(){
+    @Override
+    public String toString() {
         return this.name;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
