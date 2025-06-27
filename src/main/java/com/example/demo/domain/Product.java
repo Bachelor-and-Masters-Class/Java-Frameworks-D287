@@ -13,7 +13,6 @@ import java.util.Set;
 @Entity
 @Table(name = "Products")
 @ValidProductPrice
-@ValidEnufParts
 public class Product implements Serializable {
 
     @Id
@@ -29,7 +28,7 @@ public class Product implements Serializable {
     @Min(value = 0, message = "Inventory must be at least 0")
     private int inv;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "product_part",
             joinColumns = @JoinColumn(name = "product_id"),
