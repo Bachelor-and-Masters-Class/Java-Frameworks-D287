@@ -48,6 +48,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void saveProduct(Product product) {
-        save(product); // Reuse save logic
+        save(product);
     }
 }
