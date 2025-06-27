@@ -9,18 +9,15 @@ import javax.validation.ConstraintValidatorContext;
 public class EnufPartsValidator implements ConstraintValidator<ValidEnufParts, Product> {
 
     @Override
-    public void initialize(ValidEnufParts constraintAnnotation) {
-
-    }
-
-    @Override
     public boolean isValid(Product product, ConstraintValidatorContext context) {
+        if (product == null || product.getParts() == null || product.getParts().isEmpty()) {
+            return true; // No parts associated = skip this check
+        }
 
-        if (product.getParts() == null || product.getParts().isEmpty()) return true;
-
+        int requiredQuantity = product.getInv();
 
         for (Part part : product.getParts()) {
-            if (part.getInv() <= 0) {
+            if (part.getInv() < requiredQuantity) {
                 return false;
             }
         }
@@ -28,3 +25,4 @@ public class EnufPartsValidator implements ConstraintValidator<ValidEnufParts, P
         return true;
     }
 }
+
