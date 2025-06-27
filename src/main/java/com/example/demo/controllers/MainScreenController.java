@@ -47,22 +47,24 @@ public class MainScreenController {
     // "Buy Now" functionality for a product
     @PostMapping("/buy/{id}")
     public String buyProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        Optional<Product> productOptional = Optional.ofNullable(productService.findById(Math.toIntExact(id)));
+        try {
+            Product product = productService.findById(Math.toIntExact(id));
 
-        if (productOptional.isPresent()) {
-            Product product = productOptional.get();
-            if (product.getInv() > 0) {
-                product.setInv(product.getInv() - 1);
-                productService.save(product);
-                redirectAttributes.addFlashAttribute("message", "Purchase successful!");
+            if (product != null) {
+                if (product.getInv() > 0) {
+                    product.setInv(product.getInv() - 1);
+                    productService.save(product);
+                    redirectAttributes.addFlashAttribute("message", "Purchase successful!");
+                } else {
+                    redirectAttributes.addFlashAttribute("message", "Out of stock.");
+                }
             } else {
-                redirectAttributes.addFlashAttribute("message", "Out of stock.");
+                redirectAttributes.addFlashAttribute("message", "Product not found.");
             }
-        } else {
-            redirectAttributes.addFlashAttribute("message", "Product not found.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Purchase failed: " + e.getMessage());
         }
 
         return "redirect:/mainscreen";
     }
 }
-
