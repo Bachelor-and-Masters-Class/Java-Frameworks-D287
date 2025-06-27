@@ -16,31 +16,25 @@ C.  Customize the HTML user interface for your customer’s application. The use
 
 File Name: MainScreen.html
 
-Line 23: Added my shop name
+Line 23: Added a <header> section that includes the shop name.
 
 ```<h1>RepairPro Hardware</h1>```
 
 File Name: MainScreen.html
 
-Line 36-40: Added my product names
+Line 36-37 : Created a #products section that loops through productList and displays each product’s name, price, inventory, and ID.
 
-```<li>Cordless Drill</li>```  
-```<li>Electrician Tool Kit</li>``` 
-```<li>Plumbing Repair Kit</li>```  
-```<li>General Repair Set</li>```  
-```<li>Deluxe Home Repair Kit</li>``` 
+```<div class="product-entry" th:each="product : ${productList}">```
+```<p><strong>ID:</strong> <span th:text="${product.id}">0</span></p>```
 
 File Name: MainScreen.html
 
-Lines 64-68: Added my part names
+Lines 45 and 69: Inside each product, displayed associated part names using th:each="part : ${product.parts}".
+Added a #parts section to display all available parts from partList using another th:each.
 
-```<li>Cordless Drill</li>```  
-```<li>Wire Stripper</li>```  
-```<li>Pipe Wrench</li>``` 
-```<li>Utility Knife</li>```  
-```<li>Adjustable Spanner</li>``` 
-
-
+```<li th:each="part : ${product.parts}" th:text="${part.name}"></li>```  
+and  
+```<li th:each="part : ${partList}" th:text="${part.name}"></li>``` 
 
 D.  Add an “About” page to the application to describe your chosen customer’s company to web viewers and include navigation to and from the “About” page and the main screen.
 
@@ -48,7 +42,7 @@ File Name: MainScreen.html
 
 Line 26: Added a button linked to the “About Us” page below the shop name.
 
-```<a href="/templates/about.html">About Us</a>```
+``` <a href="/about">About Us</a>```
 
 File Name: About.html
 
@@ -59,92 +53,31 @@ Line 16-17: Added a statement describing my company.
 
 File Name: About.html
 
-Line 11: Added a button navigating back to the mainscreen/home page.
+Line 11: Added a navigation link to return to the main screen.
 
-```<a href="mainscreen.html">Home</a>```
+```<a href="mainscreen">Home</a>```
 
 E.  Add a sample inventory appropriate for your chosen store to the application. You should have five parts and five products in your sample inventory and should not overwrite existing data in the database.
 
 File Name: BootStrapData.java
 
-Line 38-106: Added five parts in my sample inventory
+Line 36-40: Added five parts in my sample inventory
 
-```InhousePart ip1 = new InhousePart();```
-```ip1.setId(201);```
-```ip1.setName("Hammer");```
-```ip1.setPrice(12.99);```
-```ip1.setInv(15);```
-```ip1.setMinInv(5);```
-```ip1.setMaxInv(50);```
-```inhousePartRepository.save(ip1);```
-```InhousePart thePart = null;```
-```inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();```
-```for (InhousePart part : inhouseParts) {```
-```if (part.getName().equals("Hammer")) thePart = part;```
-```}```
-```InhousePart ip2 = new InhousePart();```
-```ip2.setId(202);```
-```ip2.setName("Wrench");```
-```ip2.setPrice(9.49);```
-```ip2.setInv(20);```
-```ip2.setMinInv(5);```
-```ip2.setMaxInv(50);```
-```inhousePartRepository.save(ip2);```
-```thePart = null;```
-```inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();```
-```for (InhousePart part : inhouseParts) {```
-```if (part.getName().equals("Wrench")) thePart = part;```
-```}```
-```InhousePart ip3 = new InhousePart();```
-```ip3.setId(203);```
-```ip3.setName("Pliers");```
-```ip3.setPrice(6.75);```
-```ip3.setInv(18);```
-```ip3.setMinInv(3);```
-```ip3.setMaxInv(60);```
-```inhousePartRepository.save(ip3);```
-```thePart = null;```
-```inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();```
-```for (InhousePart part : inhouseParts) {```
-```if (part.getName().equals("Pliers")) thePart = part;```
-```}```
-```InhousePart ip4 = new InhousePart();```
-```ip4.setId(204);```
-```ip4.setName("Screwdriver");```
-```ip4.setPrice(5.99);```
-```ip4.setInv(30);```
-```ip4.setMinInv(5);```
-```ip4.setMaxInv(75);```
-```inhousePartRepository.save(ip4);```
-```thePart = null;```
-```inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();```
-```for (InhousePart part : inhouseParts) {```
-```if (part.getName().equals("Screwdriver")) thePart = part;```
-```}```
-```InhousePart ip5 = new InhousePart();```
-```ip5.setId(205);```
-```ip5.setName("Drill Bit Set");```
-```ip5.setPrice(14.99);```
-```ip5.setInv(10);```
-```ip5.setMinInv(2);```
-```ip5.setMaxInv(40);```
-```inhousePartRepository.save(ip5);```
-```thePart = null;```
-```inhouseParts = (List<InhousePart>) inhousePartRepository.findAll();```
-```for (InhousePart part : inhouseParts) {```
-```if (part.getName().equals("Drill Bit Set")) thePart = part;```
-```}```
+```InhousePart drill = new InhousePart("Cordless Drill", 49.99, 50, 5, 60);```
+```InhousePart stripper = new InhousePart("Wire Stripper", 12.50, 40, 4, 50);```
+```InhousePart wrench = new InhousePart("Pipe Wrench", 24.75, 30, 3, 40);```
+```InhousePart knife = new InhousePart("Utility Knife", 8.75, 30, 5, 50);```
+```InhousePart spanner = new InhousePart("Adjustable Spanner", 14.00, 25, 5, 40);```
 
 File Name: BootStrapData.java
-Lines 153-157: Added products in my sample inventory
 
-```Product repairKit = new Product("Home Repair Kit", 39.99, 5);```
-```Product plumbingKit = new Product("Plumbing Kit", 29.99, 4);```
-```Product drillKit = new Product("Drill Kit", 49.99, 3);```
-```Product electricianKit = new Product("Electrician Starter Kit", 44.99, 2);```
-```Product multipackTools = new Product("Multi-Pack Tool Set", 59.99, 3);```
+Lines 47-51: Added products in my sample inventory
 
-
+```Product repairKit = new Product("Deluxe Home Repair Kit", 99.99, 5);```
+```Product electricianKit = new Product("Electrician Tool Set", 89.50, 3);```
+```Product plumbingKit = new Product("Plumbing Repair Kit", 74.25, 4);```
+```Product drillKit = new Product("Cordless Drill Kit", 79.99, 6);```
+```Product generalRepair = new Product("General Repair Set", 82.00, 2);```
 
 F. Add a “Buy Now” button to your product list. Your “Buy Now” button must meet each of the following parameters:
 •  The “Buy Now” button must be next to the buttons that update and delete products.
@@ -153,21 +86,22 @@ F. Add a “Buy Now” button to your product list. Your “Buy Now” button mu
 
 File Name: MainScreen.html
 
-Lines 39-41: Added a buy now button next to the update and delete buttons
+Lines 50-60: Added a buy now button next to the update and delete buttons
 
-```<form th:action="@{'/products/buy/' + ${product.id}}" method="post">```  
-```<button type="submit">Buy Now</button>```
-```</form>```
-```<form th:action="@{'/products/update/' + ${product.id}}" method="get">```
-```<button type="submit">Update</button>```
-```</form>```
-```<form th:action="@{'/products/delete/' + ${product.id}}" method="post">```
-```<button type="submit">Delete</button>```
+                ```<form th:action="@{'/buy/' + ${product.id}}" method="post">```
+                    ```<button type="submit">Buy Now</button>```
+                ```</form>```
+                ```<form th:action="@{/showProductFormForUpdate}" method="get">```
+                   ```<input type="hidden" name="productID" th:value="${product.id}" />```
+                    ```<button type="submit">Update</button>```
+                ```</form>```
+                ```<form th:action="@{'/products/delete/' + ${product.id}}" method="post">```
+                    ```<button type="submit">Delete</button>```
 
 
 File Name: MainScreenController.java
 
-Lines 44-45: Added code so the “Buy Now” button decrement the inventory of a product by one
+Lines 54-55: Added code so the “Buy Now” button decrement the inventory of a product by one
 
 ```if (product.getInv() > 0) {```
 ```product.setInv(product.getInv() - 1);```
@@ -175,9 +109,8 @@ Lines 44-45: Added code so the “Buy Now” button decrement the inventory of a
 
 File Name: MainScreenController.java
 
-Line 46-53: Message added that indicates the success of a product, if the product is out of stock or product not found.
+Line 57-63: Message added that indicates the success of a product, if the product is out of stock or product not found.
 
-```productService.save(product);```
 ```redirectAttributes.addFlashAttribute("message", "Purchase successful!");```
 ```} else {```
 ```redirectAttributes.addFlashAttribute("message", "Out of stock.");```
@@ -185,7 +118,6 @@ Line 46-53: Message added that indicates the success of a product, if the produc
 ```} else {```
 ```redirectAttributes.addFlashAttribute("message", "Product not found.");```
 ```}```
-
 
 
 G. Modify the parts to track maximum and minimum inventory by doing the following:
@@ -197,27 +129,29 @@ G. Modify the parts to track maximum and minimum inventory by doing the followin
 
 File Name: Part.java
 
-Lines 26-30: Added additional fields to the part entity (max/min inventory)
+Lines 26-33: Added additional fields to the part entity (max/min inventory)
 
+```@Min(value = 0, message = "Inventory must be non-negative")```
 ```private int inv;```
+```@Min(value = 0, message = "Minimum inventory must be non-negative")```
 ```private int minInv;```
-```private int maxInv;```
+```@Min(value = 1, message = "Maximum inventory must be at least 1")```
+```private int maxInv```
 
 File Name: BootStrapData.java
 
-Lines 110-114: Modified my sample inventory to include the max and min fields
+Lines 36-40: Modified my sample inventory to include the max and min fields
 
-```Product repairKit = new Product("Home Repair Kit", 39.99, 5, 1, 10);```
-```Product plumbingKit = new Product("Plumbing Kit", 29.99, 4, 1, 8);```
-```Product drillKit = new Product("Drill Kit", 49.99, 3, 1, 6);```
-```Product electricianKit = new Product("Electrician Starter Kit", 44.99, 2, 1, 5);```
-```Product multipackTools = new Product("Multi-Pack Tool Set", 59.99, 3, 1, 7);```
+```InhousePart drill = new InhousePart("Cordless Drill", 49.99, 50, 5, 60);```
+```InhousePart stripper = new InhousePart("Wire Stripper", 12.50, 40, 4, 50);```
+```InhousePart wrench = new InhousePart("Pipe Wrench", 24.75, 30, 3, 40);```
+```InhousePart knife = new InhousePart("Utility Knife", 8.75, 30, 5, 50);```
+```InhousePart spanner = new InhousePart("Adjustable Spanner", 14.00, 25, 5, 40);```
 
 File Name: InhousePartForm.html
 
-Lines 34-42: Added inputs for min/max inventory
+Lines 30-37: Added inputs for min/max inventory
 
-```<p><label>```
 ```<input type="text" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4" />```
 ```</label></p>```
 ```<p th:if="${#fields.hasErrors('minInv')}" th:errors="*{minInv}">Min Inventory Error</p>```
@@ -229,7 +163,7 @@ Lines 34-42: Added inputs for min/max inventory
 
 File Name: OutsourcedPartForm.html
 
-Lines 34-41: Added inputs for min/max inventory
+Lines 33-40: Added inputs for min/max inventory
 
 ```<input type="text" th:field="*{minInv}" placeholder="Minimum Inventory" class="form-control mb-4 col-4" />```
 ```</label></p>```
@@ -240,16 +174,16 @@ Lines 34-41: Added inputs for min/max inventory
 ```<p th:if="${#fields.hasErrors('maxInv')}" th:errors="*{maxInv}">Max Inventory Error</p>``` 
 
 
-File Name: Application.properities
+File Name: Application.properties
 
-Line 7: Renamed the file the persistent storage is saved to
+Line 4: Renamed the file the persistent storage is saved to
 
-```#spring.datasource.url=jdbc:h2:file:./data/repairpro_inventory_db```
+```spring.datasource.url=jdbc:h2:file:./data/repairpro_inventory_db```
 
 
 File Name: Part.java
 
-Lines 98-99: Modified code to ensure that the inventory is between or at the minimum and maximum value.
+Lines 69-70: Modified code to ensure that the inventory is between or at the minimum and maximum value.
 
 ```public boolean isInventoryValid() {```
 ```return inv >= minInv && inv <= maxInv;```
@@ -261,23 +195,21 @@ H.  Add validation for between or at the maximum and minimum fields. The validat
 
 File Name: AddProductController.java
 
-Lines 62-63: Error message added for low inventory when adding and updating products lowers the part inventory below the minimum.
+Lines 57-58: Error message added for low inventory when adding and updating products lowers the part inventory below the minimum.
 
-```model.addAttribute("error", "Adding this product will reduce inventory for part '" + p.getName() + "' below its minimum (" + p.getMin() + ").");```
-```updatePartLists(model, product);```
-
+```model.addAttribute("error", "Adding this product will reduce inventory for part '" +```
+```part.getName() + "' below its minimum of " + part.getMinInv() + ".");```
 
 File Name: AddPartController.java
 
-Lines 75-76: Added error messages when adding and updating parts if the inventory is greater than the maximum.
+Lines 99-100: Added error messages when adding and updating parts if the inventory is greater than the maximum.
 
 ```}else if (part.getInv() > part.getMaxInv()) {```
 ```bindingResult.rejectValue("inv", "error.inv", "Inventory cannot be greater than the maximum.");```
 
-
 File Name: AddPartController.java
 
-Lines 73-74: Added error messages for low inventory when adding and updating parts if the inventory is less than the minimum number of parts.
+Lines 97-98: Added error messages for low inventory when adding and updating parts if the inventory is less than the minimum number of parts.
 
 ```if (!part.isInventoryValid()) {```
 ```bindingResult.rejectValue("inv", "error.inv", "Inventory cannot be less than the minimum.");```
@@ -287,7 +219,7 @@ I.  Add at least two unit tests for the maximum and minimum fields to the PartTe
 
 File Name: PartTest.java
 
-Lines 163-185: Added unit tests for the maximum and minimum fields to the PartTest class.
+Lines 166-195: Added unit tests for the maximum and minimum fields to the PartTest class.
 
 ```@Test```
 ```void testInventoryBelowMinimumIsInvalid() {```
@@ -296,21 +228,26 @@ Lines 163-185: Added unit tests for the maximum and minimum fields to the PartTe
 ```partIn.setInv(3);```
 ```assertFalse(partIn.isInventoryValid(), "Inventory below min should be invalid");```
 ```}```
-```@Test```
-```void testInventoryAboveMaximumIsInvalid() {```
-```partIn.setMin(1);```
-```partIn.setMax(10);```
-```partIn.setInv(12);```
-```assertFalse(partIn.isInventoryValid(), "Inventory above max should be invalid");```
-```}```
-```@Test```
-```void testInventoryWithinRangeIsValid() {```
-```partIn.setMin(3);```
-```partIn.setMax(10);```
-```partIn.setInv(7);```
-```assertTrue(partIn.isInventoryValid(), "Inventory within range should be valid");```
-```}```
-
+    ```@Test```
+    ```void testInventoryAboveMaximumIsInvalid() {```
+       ``` partIn.setMin(1);```
+        ```partIn.setMax(10);```
+        ```partIn.setInv(12);```
+        ```assertFalse(partIn.isInventoryValid(), "Inventory above max should be invalid");```
+    ```}```
+    ```@Test```
+    ```void testMinimumInventoryIsSetCorrectly() {```
+        ```partIn.setMin(4);```
+        ```partIn.setMax(15);```
+        ```partIn.setInv(3);```
+        ```assertFalse(partIn.isInventoryValid(), "Inventory should be invalid when below the new min");```
+    ```}```
+    ```@Test```
+    ```void testMaximumInventoryIsSetCorrectly() {```
+        ```partIn.setMin(2);```
+        ```partIn.setMax(6);```
+        ```partIn.setInv(7);```
+        ```assertFalse(partIn.isInventoryValid(), "Inventory should be invalid when above the new max");```
 
 J.  Remove the class files for any unused validators in order to clean your code.
 
