@@ -29,25 +29,25 @@ public class BootStrapData implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        if (productRepository.count() == 0 &&
-                inhousePartRepository.count() == 0 &&
-                outsourcedPartRepository.count() == 0) {
+        productRepository.deleteAll();
+        inhousePartRepository.deleteAll();
+        outsourcedPartRepository.deleteAll();
 
-            InhousePart drill = new InhousePart("Cordless Drill", 49.99, 20, 5, 30);
-            InhousePart stripper = new InhousePart("Wire Stripper", 12.50, 18, 4, 25);
-            InhousePart wrench = new InhousePart("Pipe Wrench", 24.75, 15, 3, 20);
+            InhousePart drill = new InhousePart("Cordless Drill", 49.99, 50, 5, 60);
+            InhousePart stripper = new InhousePart("Wire Stripper", 12.50, 40, 4, 50);
+            InhousePart wrench = new InhousePart("Pipe Wrench", 24.75, 30, 3, 40);
             InhousePart knife = new InhousePart("Utility Knife", 8.75, 30, 5, 50);
             InhousePart spanner = new InhousePart("Adjustable Spanner", 14.00, 25, 5, 40);
             inhousePartRepository.saveAll(Arrays.asList(drill, stripper, wrench, knife, spanner));
 
-            OutsourcedPart socketSet = new OutsourcedPart("Socket Set", 19.99, 12, 2, 50, "ToolPro Inc.");
-            OutsourcedPart allenSet = new OutsourcedPart("Allen Wrench Set", 11.49, 22, 4, 60, "FixIt Tools");
+            OutsourcedPart socketSet = new OutsourcedPart("Socket Set", 19.99, 40, 2, 50, "ToolPro Inc.");
+            OutsourcedPart allenSet = new OutsourcedPart("Allen Wrench Set", 11.49, 45, 4, 60, "FixIt Tools");
             outsourcedPartRepository.saveAll(Arrays.asList(socketSet, allenSet));
 
             Product repairKit = new Product("Deluxe Home Repair Kit", 99.99, 5);
             Product electricianKit = new Product("Electrician Tool Set", 89.50, 3);
             Product plumbingKit = new Product("Plumbing Repair Kit", 74.25, 4);
-            Product drillKit = new Product("Cordless Drill Kit", 64.99, 6);
+            Product drillKit = new Product("Cordless Drill Kit", 79.99, 6);
             Product generalRepair = new Product("General Repair Set", 82.00, 2);
 
             repairKit.getParts().addAll(Arrays.asList(drill, knife, spanner));
@@ -59,5 +59,3 @@ public class BootStrapData implements CommandLineRunner {
             productRepository.saveAll(Arrays.asList(repairKit, electricianKit, plumbingKit, drillKit, generalRepair));
         }
     }
-}
-
