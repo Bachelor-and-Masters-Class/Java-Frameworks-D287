@@ -47,13 +47,13 @@ public class AddProductController {
 
         product.setParts(productInEdit.getParts());
 
-
         if (bindingResult.hasErrors()) {
             updatePartLists(model, product);
             return "productForm";
         }
         for (Part part : product.getParts()) {
-            if ((part.getInv() - product.getInv()) < part.getMinInv()) {
+            int projectedInventory = part.getInv() - product.getInv();
+            if (projectedInventory < part.getMinInv()) {
                 model.addAttribute("error", "Adding this product will reduce inventory for part '" +
                         part.getName() + "' below its minimum of " + part.getMinInv() + ".");
                 updatePartLists(model, product);
@@ -66,8 +66,9 @@ public class AddProductController {
             partService.save(part);
         }
 
-        // Save the product
         productService.save(product);
+
+        model.addAttribute("error", null);
         return "redirect:/mainscreen";
     }
 
