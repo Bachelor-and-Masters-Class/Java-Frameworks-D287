@@ -26,14 +26,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class PartTest {
     Part partIn;
     Part partOut;
+
     @BeforeEach
     void setUp() {
-        partIn=new InhousePart();
-        partOut=new OutsourcedPart();
+        partIn = new InhousePart();
+        partOut = new OutsourcedPart();
     }
+
     @Test
     void getId() {
-        Long idValue=4L;
+        Long idValue = 4L;
         partIn.setId((long) Math.toIntExact(idValue));
         assertEquals(idValue, partIn.getId());
         partOut.setId(idValue);
@@ -42,7 +44,7 @@ class PartTest {
 
     @Test
     void setId() {
-        Long idValue=4L;
+        Long idValue = 4L;
         partIn.setId(idValue);
         assertEquals(idValue, partIn.getId());
         partOut.setId(idValue);
@@ -51,65 +53,65 @@ class PartTest {
 
     @Test
     void getName() {
-        String name="test inhouse part";
+        String name = "test inhouse part";
         partIn.setName(name);
-        assertEquals(name,partIn.getName());
-        name="test outsourced part";
+        assertEquals(name, partIn.getName());
+        name = "test outsourced part";
         partOut.setName(name);
-        assertEquals(name,partOut.getName());
+        assertEquals(name, partOut.getName());
     }
 
     @Test
     void setName() {
-        String name="test inhouse part";
+        String name = "test inhouse part";
         partIn.setName(name);
-        assertEquals(name,partIn.getName());
-        name="test outsourced part";
+        assertEquals(name, partIn.getName());
+        name = "test outsourced part";
         partOut.setName(name);
-        assertEquals(name,partOut.getName());
+        assertEquals(name, partOut.getName());
     }
 
     @Test
     void getPrice() {
-        double price=1.0;
+        double price = 1.0;
         partIn.setPrice(price);
-        assertEquals(price,partIn.getPrice());
+        assertEquals(price, partIn.getPrice());
         partOut.setPrice(price);
-        assertEquals(price,partOut.getPrice());
+        assertEquals(price, partOut.getPrice());
     }
 
     @Test
     void setPrice() {
-        double price=1.0;
+        double price = 1.0;
         partIn.setPrice(price);
-        assertEquals(price,partIn.getPrice());
+        assertEquals(price, partIn.getPrice());
         partOut.setPrice(price);
-        assertEquals(price,partOut.getPrice());
+        assertEquals(price, partOut.getPrice());
     }
 
     @Test
     void getInv() {
-        int inv=5;
+        int inv = 5;
         partIn.setInv(inv);
-        assertEquals(inv,partIn.getInv());
+        assertEquals(inv, partIn.getInv());
         partOut.setInv(inv);
-        assertEquals(inv,partOut.getInv());
+        assertEquals(inv, partOut.getInv());
     }
 
     @Test
     void setInv() {
-        int inv=5;
+        int inv = 5;
         partIn.setInv(inv);
-        assertEquals(inv,partIn.getInv());
+        assertEquals(inv, partIn.getInv());
         partOut.setInv(inv);
-        assertEquals(inv,partOut.getInv());
+        assertEquals(inv, partOut.getInv());
     }
 
     @Test
     void getProducts() {
-        Product product1= new Product();
-        Product product2= new Product();
-        Set<Product> myProducts= new HashSet<>();
+        Product product1 = new Product();
+        Product product2 = new Product();
+        Set<Product> myProducts = new HashSet<>();
         myProducts.add(product1);
         myProducts.add(product2);
         partIn.setProducts((List<Product>) myProducts);
@@ -120,37 +122,37 @@ class PartTest {
 
     @Test
     void setProducts() {
-        Product product1= new Product();
-        Product product2= new Product();
-        Set<Product> myProducts= new HashSet<>();
+        Product product1 = new Product();
+        Product product2 = new Product();
+        Set<Product> myProducts = new HashSet<>();
         myProducts.add(product1);
         myProducts.add(product2);
         partIn.setProducts((List<Product>) myProducts);
-        assertEquals(myProducts,partIn.getProducts());
+        assertEquals(myProducts, partIn.getProducts());
         partOut.setProducts((List<Product>) myProducts);
-        assertEquals(myProducts,partOut.getProducts());
+        assertEquals(myProducts, partOut.getProducts());
     }
 
     @Test
     void testToString() {
-        String name="test inhouse part";
+        String name = "test inhouse part";
         partIn.setName(name);
-        assertEquals(name,partIn.toString());
-        name="test outsourced part";
+        assertEquals(name, partIn.toString());
+        name = "test outsourced part";
         partOut.setName(name);
-        assertEquals(name,partOut.toString());
+        assertEquals(name, partOut.toString());
     }
 
     @Test
     void testEquals() {
         partIn.setId(1L);
-        Part newPartIn=new InhousePart();
+        Part newPartIn = new InhousePart();
         newPartIn.setId(1L);
-        assertEquals(partIn,newPartIn);
+        assertEquals(partIn, newPartIn);
         partOut.setId(1L);
-        Part newPartOut=new OutsourcedPart();
+        Part newPartOut = new OutsourcedPart();
         newPartOut.setId(1L);
-        assertEquals(partOut,newPartOut);
+        assertEquals(partOut, newPartOut);
 
     }
 
@@ -158,7 +160,7 @@ class PartTest {
     void testHashCode() {
         partIn.setId(1L);
         partOut.setId(1L);
-        assertEquals(partIn.hashCode(),partOut.hashCode());
+        assertEquals(partIn.hashCode(), partOut.hashCode());
     }
 
     @Test
@@ -178,10 +180,18 @@ class PartTest {
     }
 
     @Test
-    void testInventoryWithinRangeIsValid() {
-        partIn.setMin(3);
-        partIn.setMax(10);
+    void testMinimumInventoryIsSetCorrectly() {
+        partIn.setMin(4);
+        partIn.setMax(15);
+        partIn.setInv(3);
+        assertFalse(partIn.isInventoryValid(), "Inventory should be invalid when below the new min");
+    }
+
+    @Test
+    void testMaximumInventoryIsSetCorrectly() {
+        partIn.setMin(2);
+        partIn.setMax(6);
         partIn.setInv(7);
-        assertTrue(partIn.isInventoryValid(), "Inventory within range should be valid");
+        assertFalse(partIn.isInventoryValid(), "Inventory should be invalid when above the new max");
     }
 }
