@@ -38,11 +38,18 @@
             <p><strong>Name:</strong> <span th:text="${product.name}">Product Name</span></p>
             <p><strong>Price:</strong> $<span th:text="${product.price}">0.00</span></p>
             <p><strong>Inventory:</strong> <span th:text="${product.inv}">0</span></p>
+            <p><strong>Min Inventory:</strong> <span th:text="${product.min}">0</span></p>
+            <p><strong>Max Inventory:</strong> <span th:text="${product.max}">0</span></p>
 
             <div th:if="${product.parts != null}">
                 <p><strong>Associated Parts:</strong></p>
                 <ul>
-                    <li th:each="part : ${product.parts}" th:text="${part.name}"></li>
+                    <li th:each="part : ${product.parts}">
+                        <span th:text="${part.name}">Part Name</span> -
+                        <span th:text="'Inventory: ' + ${part.inv}">Inventory: 0</span>
+                        <span th:text="'Min: ' + ${part.minInv}">Min: 0</span> -
+                        <span th:text="'Max: ' + ${part.maxInv}">Max: 0</span>
+                    </li>
                 </ul>
             </div>
 
@@ -66,10 +73,30 @@
     <section id="parts">
         <h2>Available Parts</h2>
         <ul>
-            <li th:each="part : ${partList}" th:text="${part.name}"></li>
+            <li th:each="part : ${partList}">
+                <span th:text="${part.name}">Part Name</span> -
+                <span th:text="'Inventory: ' + ${part.inv}">Inventory: 0</span> -
+                <span th:text="'Min: ' + ${part.minInv}">Min: 0</span> -
+                <span th:text="'Max: ' + ${part.maxInv}">Max: 0</span>
+
+                <form th:action="@{/showPartFormForUpdate}" method="get" style="display:inline;">
+                    <input type="hidden" name="partID" th:value="${part.id}" />
+                    <button type="submit">Update</button>
+                </form>
+
+                <form th:action="@{/deletepart}" method="get" style="display:inline;">
+                    <input type="hidden" name="partID" th:value="${part.id}" />
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
         </ul>
-        <form th:action="@{/showFormAddPart}" method="get">
-            <button type="submit">Add New Part</button>
+
+        <form th:action="@{/showFormAddInhousePart}" method="get">
+            <button type="submit">Add Inhouse Part</button>
+        </form>
+
+        <form th:action="@{/showFormAddOutsourcedPart}" method="get">
+            <button type="submit">Add Outsourced Part</button>
         </form>
     </section>
 </main>
