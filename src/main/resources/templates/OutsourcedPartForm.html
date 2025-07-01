@@ -8,7 +8,7 @@
 
 <h1>Outsourced Part Detail</h1>
 
-<form th:action="@{/showFormAddOutPart}" th:object="${outsourcedpart}" method="POST">
+<form th:action="@{/saveOutsourcedPart}" th:object="${outsourcedpart}" method="POST">
 
     <p><input type="hidden" th:field="*{id}" /></p>
 
@@ -35,10 +35,6 @@
         <input type="number" th:field="*{maxInv}" placeholder="Maximum Inventory" class="form-control mb-4 col-4" />
     </label></p>
     <p th:if="${#fields.hasErrors('maxInv')}" th:errors="*{maxInv}">Max Inventory Error</p>
-
-    <p><label>
-        <input type="text" placeholder="Part ID" class="form-control mb-4 col-4" />
-    </label></p>
 
     <p><input type="submit" value="Submit" /></p>
 </form>
