@@ -44,11 +44,11 @@ public class BootStrapData implements CommandLineRunner {
             OutsourcedPart allenSet = new OutsourcedPart("Allen Wrench Set", 11.49, 45, 4, 60, "FixIt Tools");
             outsourcedPartRepository.saveAll(Arrays.asList(socketSet, allenSet));
 
-            Product repairKit = new Product("Deluxe Home Repair Kit", 99.99, 5);
-            Product electricianKit = new Product("Electrician Tool Set", 89.50, 3);
-            Product plumbingKit = new Product("Plumbing Repair Kit", 74.25, 4);
-            Product drillKit = new Product("Cordless Drill Kit", 79.99, 6);
-            Product generalRepair = new Product("General Repair Set", 82.00, 2);
+            Product repairKit = new Product("Deluxe Home Repair Kit", 99.99, 5,1,10);
+            Product electricianKit = new Product("Electrician Tool Set", 89.50, 3,1,10);
+            Product plumbingKit = new Product("Plumbing Repair Kit", 74.25, 4,1,10);
+            Product drillKit = new Product("Cordless Drill Kit", 79.99, 6,1,10);
+            Product generalRepair = new Product("General Repair Set", 82.00, 2, 1,10);
 
             repairKit.getParts().addAll(Arrays.asList(drill, knife, spanner));
             electricianKit.getParts().addAll(Arrays.asList(stripper, socketSet, allenSet));
