@@ -71,10 +71,12 @@ public class AddPartController {
                                   BindingResult bindingResult,
                                   Model model) {
 
-        if (!part.isInventoryValid()) {
-            bindingResult.rejectValue("inv", "error.inv", "Inventory cannot be less than the minimum.");
-        } else if (part.getInv() > part.getMaxInv()) {
+        if (part.getInv() > part.getMaxInv()) {
             bindingResult.rejectValue("inv", "error.inv", "Inventory cannot be greater than the maximum.");
+        }
+
+        if (part.getInv() < part.getMinInv()) {
+            bindingResult.rejectValue("inv", "error.inv", "Inventory cannot be less than the minimum.");
         }
 
         if (bindingResult.hasErrors()) {
@@ -88,16 +90,17 @@ public class AddPartController {
         return "confirmationaddpart";
     }
 
-    // Save OutsourcedPart
     @PostMapping("/saveOutsourcedPart")
     public String saveOutsourcedPart(@Valid @ModelAttribute("outsourcedpart") OutsourcedPart part,
                                      BindingResult bindingResult,
                                      Model model) {
 
-        if (!part.isInventoryValid()) {
-            bindingResult.rejectValue("inv", "error.inv", "Inventory cannot be less than the minimum.");
-        } else if (part.getInv() > part.getMaxInv()) {
-            bindingResult.rejectValue("inv", "error.inv", "Inventory cannot be greater than the maximum.");
+        if (part.getInv() < part.getMinInv()) {
+            bindingResult.rejectValue("inv", "error.inv.low", "Inventory cannot be less than the minimum.");
+        }
+
+        if (part.getInv() > part.getMaxInv()) {
+            bindingResult.rejectValue("inv", "error.inv.high", "Inventory cannot be greater than the maximum.");
         }
 
         if (bindingResult.hasErrors()) {
@@ -123,13 +126,40 @@ public class AddPartController {
     }
 
     @PostMapping("/savePart")
-    public String savePart(@Valid @ModelAttribute("part") InhousePart part, BindingResult result, Model model) {
+    public String savePart(@Valid @ModelAttribute("part") InhousePart part,
+                           BindingResult result,
+                           Model model) {
+
+        if (!part.isInventoryValid()) {
+            result.rejectValue("inv", "error.inv", "Inventory must be between minimum and maximum.");
+        } else if (part.getInv() > part.getMaxInv()) {
+            result.rejectValue("inv", "error.inv", "Inventory cannot be greater than the maximum.");
+        }
+
         if (result.hasErrors()) {
+            model.addAttribute("part", part);
             return "partForm";
         }
 
         PartService partService = context.getBean(PartServiceImpl.class);
         partService.save(part);
         return "confirmationaddpart";
+    }
+    @GetMapping("/showFormAddInhousePart")
+    public String showFormAddInhousePart(Model model) {
+        InhousePart part = new InhousePart();
+        part.setMinInv(1);
+        part.setMaxInv(10);
+        model.addAttribute("inhousepart", part);
+        return "InhousePartForm";
+    }
+
+    @GetMapping("/showFormAddOutsourcedPart")
+    public String showFormAddOutsourcedPart(Model model) {
+        OutsourcedPart part = new OutsourcedPart();
+        part.setMinInv(1);
+        part.setMaxInv(10);
+        model.addAttribute("outsourcedpart", part);
+        return "OutsourcedPartForm";
     }
 }
