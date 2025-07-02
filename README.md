@@ -73,11 +73,11 @@ File Name: BootStrapData.java
 
 Lines 47-51: Added products in my sample inventory
 
-```Product repairKit = new Product("Deluxe Home Repair Kit", 99.99, 5);```
-```Product electricianKit = new Product("Electrician Tool Set", 89.50, 3);```
-```Product plumbingKit = new Product("Plumbing Repair Kit", 74.25, 4);```
-```Product drillKit = new Product("Cordless Drill Kit", 79.99, 6);```
-```Product generalRepair = new Product("General Repair Set", 82.00, 2);```
+```Product repairKit = new Product("Deluxe Home Repair Kit", 99.99, 5, 1, 10);```
+```Product electricianKit = new Product("Electrician Tool Set", 89.50, 3, 1, 10);```
+```Product plumbingKit = new Product("Plumbing Repair Kit", 74.25, 4, 1, 10);```
+```Product drillKit = new Product("Cordless Drill Kit", 79.99, 6, 1, 10);```
+```Product generalRepair = new Product("General Repair Set", 82.00, 2, 1, 10);```
 
 F. Add a “Buy Now” button to your product list. Your “Buy Now” button must meet each of the following parameters:
 •  The “Buy Now” button must be next to the buttons that update and delete products.
