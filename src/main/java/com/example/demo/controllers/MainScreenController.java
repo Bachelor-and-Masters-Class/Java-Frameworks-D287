@@ -33,6 +33,11 @@ public class MainScreenController {
                                  @RequestParam(value = "productkeyword", required = false) String productkeyword,
                                  @RequestParam(value = "message", required = false) String message) {
         List<Product> productList = productService.listAll(productkeyword);
+        List<Product> filteredProducts = productList.stream()
+                .filter(p -> !p.getName().equalsIgnoreCase("Cordless Drill"))
+                .filter(p -> !p.getName().equalsIgnoreCase("Drill Combo"))
+                .collect(Collectors.toList());
+
         List<Part> partList = partService.getAllParts();
 
         model.addAttribute("productList", productList);
