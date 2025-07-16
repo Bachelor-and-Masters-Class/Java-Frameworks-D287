@@ -33,6 +33,10 @@
     <section id="products">
         <h2>Our Products</h2>
 
+        <form th:action="@{/showFormAddProduct}" method="get">
+            <button type="submit">Add New Product</button>
+        </form>
+
         <div class="product-entry" th:each="product : ${productList}">
             <p><strong>ID:</strong> <span th:text="${product.id}">0</span></p>
             <p><strong>Name:</strong> <span th:text="${product.name}">Product Name</span></p>
