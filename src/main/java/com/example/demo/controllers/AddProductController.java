@@ -110,18 +110,18 @@ public class AddProductController {
 
     @GetMapping("/removepart")
     public String removePart(@RequestParam("partID") int partId, Model model) {
+        if (productInEdit == null) {
+            return "redirect:/mainscreen";
+        }
+
         Part part = partService.findById(partId);
 
-        productInEdit = productService.findById((int) productInEdit.getId());
-
-        productInEdit.getParts().remove(part);
-        part.getProducts().remove(productInEdit);
-
-        partService.save(part);
-        productService.save(productInEdit);
+        productInEdit.getParts().remove(part); // remove from product
+        part.getProducts().remove(productInEdit); // remove from part
 
         model.addAttribute("product", productInEdit);
         updatePartLists(model, productInEdit);
+
         return "productForm";
     }
 
